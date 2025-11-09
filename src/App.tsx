@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import { MantineProvider } from '@mantine/core';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import { CartProvider } from './context/CartContext';
+import { ProductDetailsPage } from './pages/ProductDetailsPage';
+import { ProductListPage } from './pages/ProductListPage';
+import { ShoppingCartPage } from './pages/ShoppingCartPage';
+
+const queryClient = new QueryClient();
+
+const App = () => (
+  <MantineProvider>
+    <QueryClientProvider client={queryClient}>
+      <CartProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<ProductListPage />} />
+            <Route path="/product/:id" element={<ProductDetailsPage />} />
+            <Route path="/cart" element={<ShoppingCartPage />} />
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
+    </QueryClientProvider>
+  </MantineProvider>
+);
 
 export default App;
